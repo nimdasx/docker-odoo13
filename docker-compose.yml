@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  db:
+    #image: nimdasx/sf-postgresql13
+    image: postgres:10
+    #restart: unless-stopped
+    ports:
+      - 1332:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=gundamseed
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./db/varlibpostgresqldata:/var/lib/postgresql/data
+  web:
+    image: odoo:13
+    #restart: unless-stopped
+    volumes:
+      - ./web/etcodoo:/etc/odoo
+      - ./web/mntextraaddons:/mnt/extra-addons
+      - ./web/varlibodoo:/var/lib/odoo
+    ports:
+      - 1369:8069
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=gundamseed
